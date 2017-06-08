@@ -42,6 +42,35 @@ public class SSTF implements DiskScheduler{
            Observe que no algorithm FCFS o número de cilindros do disco não é 
            considerado (numCilindros)
         */
+        int [] subs = new int[requestString.length];
+        
+        for(int j=0; j< requestString.length ; j++){
+            if(initCilindro<requestString[j]){ 
+                subs[j] = requestString[j] - initCilindro;
+            }else{
+                subs[j] = initCilindro - requestString[j];
+            }
+        }
+        int swap;
+        int swap2;
+        for (int c = 0; c < subs.length; c++) {
+            for (int d = 0; d < subs.length - c - 1; d++) {
+                if (subs[d] > subs[d+1]) /* For descending order use < */
+            {
+                    swap       = subs[d];
+                    subs[d]   = subs[d+1];
+                    subs[d+1] = swap;
+                    swap2       = requestString[d];
+                    requestString[d]   = requestString[d+1];
+                    requestString[d+1] = swap2;
+          
+            }
+            }
+        }
+
+        
+        
+      
         total = abs(initCilindro - requestString[0]);
         
         for(i=0;i<requestString.length-1;i++){
