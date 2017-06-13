@@ -18,6 +18,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,6 +32,44 @@ public class SCAN implements DiskScheduler{
         this.requestString = requestString;
         this.numCilindros = numCilindros;
         this.initCilindro = initCilindro;
+        
+        int menor = 0;
+        int maior = 0;
+        for (int i = 0; i < requestString.length; i++) {
+            if (requestString[i] <= initCilindro) {
+                menor+=1;
+            } else {
+                maior += 1;
+            }
+        }
+        
+        ArrayList<Integer> vetorMenor = new ArrayList<>();
+        ArrayList<Integer> vetorMaior = new ArrayList<>();
+        
+        int pointP = 1;
+        int pointG = 0;
+        boolean added = false;
+        vetorMenor.add(initCilindro);
+        
+        for (int i = 0; i < requestString.length; i++) {
+            added = false;
+            if (requestString[i] <= initCilindro) {
+      
+                vetorMenor.add(requestString[i]);
+                   
+                
+            }else{
+                while (!added) {                    
+                    if (vetorMaior.get(i) == null) {
+                        vetorMenor.add(i, requestString[i]);
+                        added = true;
+                    }else if(vetorMenor.get(i) < requestString[i]){
+                        pointP +=1;
+                    }
+                }
+            }
+        }
+        
     }
 
     @Override
