@@ -101,7 +101,7 @@ public class SSTF implements DiskScheduler{
         /* Gera o gráfico de linhas */
         JFreeChart chart = ChartFactory.createXYLineChart(
             /* Title */
-            "FCFS Scheduler Algorithm",
+            "SSTF Scheduler Algorithm",
             /* Title x*/
             "",
             /* Title y */

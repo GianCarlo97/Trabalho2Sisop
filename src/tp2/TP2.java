@@ -21,6 +21,12 @@ public class TP2 {
         System.out.println("Número de cilindros percorridos: " + fcfs.serviceRequests());
         fcfs.printGraph("fcfs.jpg");
         
+        DiskScheduler sstf = new SSTF(requestString, numCilindros, initCilindro);
+        System.out.println("Número de cilindros percorridos: " + sstf.serviceRequests());
+        sstf.printGraph("sstf.jpg");
+        
+        
+        
    }
     
 }
