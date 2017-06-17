@@ -20,6 +20,8 @@ import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class CLOOK implements DiskScheduler{
@@ -42,6 +44,26 @@ public class CLOOK implements DiskScheduler{
            Observe que no algorithm FCFS o número de cilindros do disco não é 
            considerado (numCilindros)
         */
+        //int [] subs = new int[requestString.length];
+        ArrayList<Integer> beforeInit = new ArrayList<Integer>();
+        ArrayList<Integer> afterInit = new ArrayList<Integer>();
+        
+        for(int j=0; j< requestString.length ; j++){
+            if(initCilindro < requestString[j]){ 
+                afterInit.add(requestString[j]);
+            }else if (initCilindro > requestString[j]){
+                beforeInit.add(requestString[j]);
+            }
+        }
+        
+        requestString[0] = initCilindro;
+        for(int j=0; j<afterInit.size(); j++){
+            requestString[j+1] = afterInit.get(j);
+        }
+        for(int j=0; j<beforeInit.size(); j++){
+            requestString[j+afterInit.size()] = beforeInit.get(j);
+        }
+        
         total = abs(initCilindro - requestString[0]);
         
         for(i=0;i<requestString.length-1;i++){
