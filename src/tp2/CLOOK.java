@@ -45,8 +45,10 @@ public class CLOOK implements DiskScheduler{
            considerado (numCilindros)
         */
         //int [] subs = new int[requestString.length];
-        ArrayList<Integer> beforeInit = new ArrayList<Integer>();
-        ArrayList<Integer> afterInit = new ArrayList<Integer>();
+        ArrayList<Integer> beforeInit = new ArrayList<>();
+        ArrayList<Integer> afterInit = new ArrayList<>();
+        
+        Arrays.sort(requestString);
         
         for(int j=0; j< requestString.length ; j++){
             if(initCilindro < requestString[j]){ 
@@ -56,9 +58,9 @@ public class CLOOK implements DiskScheduler{
             }
         }
         
-        requestString[0] = initCilindro;
+        
         for(int j=0; j<afterInit.size(); j++){
-            requestString[j+1] = afterInit.get(j);
+            requestString[j] = afterInit.get(j);
         }
         for(int j=0; j<beforeInit.size(); j++){
             requestString[j+afterInit.size()] = beforeInit.get(j);
@@ -78,7 +80,7 @@ public class CLOOK implements DiskScheduler{
         int i;
         int y_axis = requestString.length * 10;
         
-        XYSeries series = new XYSeries("FCFS");
+        XYSeries series = new XYSeries("CLOOK");
         
         /* Adiciona o pontos XY do gráfico de linhas. */
         series.add(y_axis, initCilindro);
@@ -94,7 +96,7 @@ public class CLOOK implements DiskScheduler{
         /* Gera o gráfico de linhas */
         JFreeChart chart = ChartFactory.createXYLineChart(
             /* Title */
-            "FCFS Scheduler Algorithm",
+            "CLOOK Scheduler Algorithm",
             /* Title x*/
             "",
             /* Title y */

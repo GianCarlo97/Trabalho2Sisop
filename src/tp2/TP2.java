@@ -29,6 +29,10 @@ public class TP2 {
         System.out.println("Número de cilindros percorridos scan: " + scan.serviceRequests());
         scan.printGraph("scan.jpg");
         
+        DiskScheduler clook = new CLOOK(requestString, numCilindros, initCilindro);
+        System.out.println("Número de cilindros percorridos clook: " + clook.serviceRequests());
+        clook.printGraph("clook.jpg");
+        
         
         
    }
