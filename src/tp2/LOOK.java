@@ -18,6 +18,8 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,6 +33,31 @@ public class LOOK implements DiskScheduler{
         this.requestString = requestString;
         this.numCilindros = numCilindros;
         this.initCilindro = initCilindro;
+        
+        ArrayList<Integer> vetor = new ArrayList<>();
+        
+        for (int i = 0; i < requestString.length; i++) {
+            vetor.add(this.requestString[i]);
+        }
+        
+        
+        vetor.add(initCilindro);
+        Collections.sort(vetor);
+
+        int split = vetor.indexOf(initCilindro);
+        vetor.remove(split);
+        ArrayList<Integer> menor = new ArrayList<>(vetor.subList(0, split));
+        ArrayList<Integer> maior = new ArrayList<>(vetor.subList(split, vetor.size()));
+        
+        this.requestString = new int[menor.size()+maior.size()];
+        
+        for (int i = 0; i < maior.size(); i++) {
+            this.requestString[i] = maior.get(i);
+        }
+        for (int i = 0; i < menor.size(); i++) {
+            this.requestString[maior.size() + i] = menor.get(menor.size()-i-1);
+        }
+        
     }
 
     @Override
@@ -56,7 +83,7 @@ public class LOOK implements DiskScheduler{
         int i;
         int y_axis = requestString.length * 10;
         
-        XYSeries series = new XYSeries("FCFS");
+        XYSeries series = new XYSeries("LOOK");
         
         /* Adiciona o pontos XY do gráfico de linhas. */
         series.add(y_axis, initCilindro);
@@ -72,7 +99,7 @@ public class LOOK implements DiskScheduler{
         /* Gera o gráfico de linhas */
         JFreeChart chart = ChartFactory.createXYLineChart(
             /* Title */
-            "FCFS Scheduler Algorithm",
+            "LOOK Scheduler Algorithm",
             /* Title x*/
             "",
             /* Title y */
