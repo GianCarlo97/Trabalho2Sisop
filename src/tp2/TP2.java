@@ -18,12 +18,16 @@ public class TP2 {
         int initCilindro = 53;
         
         DiskScheduler fcfs = new FCFS(requestString, numCilindros, initCilindro);
-        System.out.println("Número de cilindros percorridos: " + fcfs.serviceRequests());
+        System.out.println("Número de cilindros percorridos fcfs: " + fcfs.serviceRequests());
         fcfs.printGraph("fcfs.jpg");
         
         DiskScheduler sstf = new SSTF(requestString, numCilindros, initCilindro);
-        System.out.println("Número de cilindros percorridos: " + sstf.serviceRequests());
+        System.out.println("Número de cilindros percorridos sstf: " + sstf.serviceRequests());
         sstf.printGraph("sstf.jpg");
+        
+        DiskScheduler scan = new SCAN(requestString, numCilindros, initCilindro);
+        System.out.println("Número de cilindros percorridos scan: " + scan.serviceRequests());
+        scan.printGraph("scan.jpg");
         
         
         

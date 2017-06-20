@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,42 +35,33 @@ public class SCAN implements DiskScheduler{
         this.numCilindros = numCilindros;
         this.initCilindro = initCilindro;
         
-        int menor = 0;
-        int maior = 0;
-        for (int i = 0; i < requestString.length; i++) {
-            if (requestString[i] <= initCilindro) {
-                menor+=1;
-            } else {
-                maior += 1;
-            }
-        }
-        
-        ArrayList<Integer> vetorMenor = new ArrayList<>();
-        ArrayList<Integer> vetorMaior = new ArrayList<>();
-        
-        int pointP = 1;
-        int pointG = 0;
-        boolean added = false;
-        vetorMenor.add(initCilindro);
+       
+        ArrayList<Integer> vetor = new ArrayList<>();
         
         for (int i = 0; i < requestString.length; i++) {
-            added = false;
-            if (requestString[i] <= initCilindro) {
-      
-                vetorMenor.add(requestString[i]);
-                   
-                
-            }else{
-                while (!added) {                    
-                    if (vetorMaior.get(i) == null) {
-                        vetorMenor.add(i, requestString[i]);
-                        added = true;
-                    }else if(vetorMenor.get(i) < requestString[i]){
-                        pointP +=1;
-                    }
-                }
-            }
+            vetor.add(this.requestString[i]);
         }
+        
+        
+        vetor.add(initCilindro);
+        vetor.add(0);
+        Collections.sort(vetor);
+
+        int split = vetor.indexOf(initCilindro);
+        vetor.remove(split);
+        ArrayList<Integer> menor = new ArrayList<>(vetor.subList(0, split));
+        ArrayList<Integer> maior = new ArrayList<>(vetor.subList(split, vetor.size()));
+        
+        this.requestString = new int[menor.size()+maior.size()];
+        
+        for (int i = 0; i < menor.size(); i++) {
+            this.requestString[i] = menor.get(menor.size()-i-1);
+        }
+        for (int i = 0; i < maior.size(); i++) {
+            this.requestString[menor.size() + i] = maior.get(i);
+        }
+        
+        
         
     }
 
@@ -95,7 +88,7 @@ public class SCAN implements DiskScheduler{
         int i;
         int y_axis = requestString.length * 10;
         
-        XYSeries series = new XYSeries("FCFS");
+        XYSeries series = new XYSeries("SCAN");
         
         /* Adiciona o pontos XY do gráfico de linhas. */
         series.add(y_axis, initCilindro);
@@ -111,7 +104,7 @@ public class SCAN implements DiskScheduler{
         /* Gera o gráfico de linhas */
         JFreeChart chart = ChartFactory.createXYLineChart(
             /* Title */
-            "FCFS Scheduler Algorithm",
+            "SCAN Scheduler Algorithm",
             /* Title x*/
             "",
             /* Title y */
