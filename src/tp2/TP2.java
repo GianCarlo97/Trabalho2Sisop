@@ -37,6 +37,10 @@ public class TP2 {
         System.out.println("Número de cilindros percorridos look: " + look.serviceRequests());
         look.printGraph("look.jpg");
         
+        DiskScheduler cscan = new CSCAN(requestString, numCilindros, initCilindro);
+        System.out.println("Número de cilindros percorridos cscan: " + cscan.serviceRequests());
+        cscan.printGraph("cscan.jpg");
+        
    }
     
 }

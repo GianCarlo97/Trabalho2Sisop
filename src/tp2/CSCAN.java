@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 package tp2;
 
@@ -18,6 +13,7 @@ import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import java.io.File;
 import java.io.IOException;
 import static java.lang.Math.abs;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,16 +33,44 @@ public class CSCAN implements DiskScheduler{
     public int serviceRequests() {
         int total = 0, i;
         
-        /* Determine o número de cilindros percorridos pelo cabeçote de leitura
-           para o algoritmo FCFS. 
-           Observe que no algorithm FCFS o número de cilindros do disco não é 
-           considerado (numCilindros)
-        */
-        total = abs(initCilindro - requestString[0]);
+        int pos =0;
+       
         
-        for(i=0;i<requestString.length-1;i++){
-            total += abs(requestString[i]-requestString[i+1]);
+        // cria array e coloca posições inicial e final nele
+        ArrayList<Integer> resultados = new ArrayList<>();        
+        resultados.add(this.initCilindro);
+        
+        int swap;       
+        for (int c = 0; c < requestString.length; c++) {
+            for (int d = 0; d < requestString.length - c - 1; d++) {
+                if (requestString[d] > requestString[d+1]){
+                    swap       = requestString[d];
+                    requestString[d]   = requestString[d+1];
+                    requestString[d+1] = swap;                    
+                    }
+            }
         }
+        
+        //salva pos inicial;
+        for(int j=0; j<requestString.length ; j++){
+            if (requestString[j] > this.initCilindro) resultados.add(requestString[j]);
+        }  
+        
+        resultados.add(this.numCilindros);
+        resultados.add(0);
+        //coloca os valores antes do pos no fim do array;
+        for(int j=0; j<requestString.length ; j++){
+            if (requestString[j] < this.initCilindro) resultados.add(requestString[j]);
+        }                         
+        
+        requestString = new int[this.requestString.length+3];
+        for(int j=0; j<requestString.length; j++){
+            requestString[j] = resultados.get(j);
+            System.out.println(requestString[j]);
+        } 
+        
+        total = this.numCilindros - this.initCilindro + requestString[requestString.length-1];
+
         
         return total;
     }
@@ -56,7 +80,7 @@ public class CSCAN implements DiskScheduler{
         int i;
         int y_axis = requestString.length * 10;
         
-        XYSeries series = new XYSeries("FCFS");
+        XYSeries series = new XYSeries("CSCAN");
         
         /* Adiciona o pontos XY do gráfico de linhas. */
         series.add(y_axis, initCilindro);
@@ -72,7 +96,7 @@ public class CSCAN implements DiskScheduler{
         /* Gera o gráfico de linhas */
         JFreeChart chart = ChartFactory.createXYLineChart(
             /* Title */
-            "FCFS Scheduler Algorithm",
+            "CSCAN Scheduler Algorithm",
             /* Title x*/
             "",
             /* Title y */

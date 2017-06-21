@@ -57,8 +57,8 @@ public class CLOOK implements DiskScheduler{
                 beforeInit.add(requestString[j]);
             }
         }
-        
-        
+        int last = afterInit.get(afterInit.size()-1);
+        int first = beforeInit.get(0);
         for(int j=0; j<afterInit.size(); j++){
             requestString[j] = afterInit.get(j);
         }
@@ -71,7 +71,7 @@ public class CLOOK implements DiskScheduler{
         for(i=0;i<requestString.length-1;i++){
             total += abs(requestString[i]-requestString[i+1]);
         }
-        
+        total -= abs(last-first);
         return total;
     }
 
